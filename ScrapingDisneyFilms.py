@@ -13,11 +13,20 @@ def main():
     # print(movies[0:10])
     # print(type(movies))
 
-    movie_info_list = scrap_wiki_disney(movies)
-
-    # print(movie_info_list)
+    # movie_info_list = scrap_wiki_disney(movies)
 
     # save_data_csv('DisneyMovies.csv', movie_info_list)
+    # save_data_json('DisneyMovies.json', movie_info_list)
+
+    movie_info = load_data_json('DisneyMovies.json')
+    # print(type(movie_info))
+    # print(movie_info[0])
+
+    for movie in movie_info:
+        movie['Running time'] = minutes_to_integer(
+            movie.get('Running time', 'N/A'))
+
+    save_data_json('DisneyMovies_cleaned_run_time.json', movie_info)
 
 
 def scrap_wiki_disney(movies):
@@ -70,6 +79,8 @@ def clean_tags(soup):
 def get_content_value(row_data):
     if row_data.find('li'):
         return [i.get_text(" ", strip=True).replace('\xa0', ' ') for i in row_data.find_all('li')]
+    elif row_data.find('br'):
+        return [text for text in row_data.stripped_strings]
     else:
         return row_data.get_text(" ", strip=True).replace('\xa0', ' ')
 
@@ -79,12 +90,26 @@ def save_data_json(title, data):
         json.dump(data, file, ensure_ascii=False, indent=2)
 
 
+def load_data_json(title):
+    with open(title, encoding='utf-8') as file:
+        return json.load(file)
+
+
 def save_data_csv(title, data):
     keys = data[0].keys()
     with open(title, 'w', newline='') as file:
         dict_writer = csv.DictWriter(file, keys)
         dict_writer.writeheader()
         dict_writer.writerows(data)
+
+
+def minutes_to_integer(running_time):
+    if running_time == 'N/A':
+        return None
+    if isinstance(running_time, list):
+        return int(running_time[0].split(" ")[0])
+    else:
+        return int(running_time.split(" ")[0])
 
 
 if __name__ == "__main__":
