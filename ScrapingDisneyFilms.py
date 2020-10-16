@@ -17,7 +17,7 @@ def main():
 
     # print(movie_info_list)
 
-    save_data_csv('DisneyMovies.csv', movie_info_list)
+    # save_data_csv('DisneyMovies.csv', movie_info_list)
 
 
 def scrap_wiki_disney(movies):
