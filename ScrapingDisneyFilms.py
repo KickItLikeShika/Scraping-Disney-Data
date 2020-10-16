@@ -1,8 +1,7 @@
-import re
 import requests
-import json
-import csv
 from bs4 import BeautifulSoup as bs
+
+from Utility import Minutes, Money, Files
 
 
 def main():
@@ -10,23 +9,28 @@ def main():
         'https://en.wikipedia.org/wiki/List_of_Walt_Disney_Pictures_films')
     soup = bs(r.content)
     movies = soup.select('.wikitable.sortable i a')
-    # print(movies[0:10])
-    # print(type(movies))
+
+    mins = Minutes()
+    money = Money()
+    files = Files()
 
     # movie_info_list = scrap_wiki_disney(movies)
 
     # save_data_csv('DisneyMovies.csv', movie_info_list)
     # save_data_json('DisneyMovies.json', movie_info_list)
 
-    movie_info = load_data_json('DisneyMovies.json')
-    # print(type(movie_info))
-    # print(movie_info[0])
+    movie_info = files.load_data_json('DisneyMovies.json')
 
     for movie in movie_info:
-        movie['Running time'] = minutes_to_integer(
+        movie['Running time'] = mins.minutes_to_integer(
             movie.get('Running time', 'N/A'))
 
-    save_data_json('DisneyMovies_cleaned_run_time.json', movie_info)
+    for movie in movie_info:
+        movie['Budget'] = money.money_conversion(movie.get('Budget', 'N/A'))
+        movie['Box office'] = money.money_conversion(
+            movie.get('Box office', 'N/A'))
+
+    files.save_data_json('DisneyMovies_cleaned_runtime_money.json', movie_info)
 
 
 def scrap_wiki_disney(movies):
@@ -83,33 +87,6 @@ def get_content_value(row_data):
         return [text for text in row_data.stripped_strings]
     else:
         return row_data.get_text(" ", strip=True).replace('\xa0', ' ')
-
-
-def save_data_json(title, data):
-    with open(title, 'w', encoding='utf-8') as file:
-        json.dump(data, file, ensure_ascii=False, indent=2)
-
-
-def load_data_json(title):
-    with open(title, encoding='utf-8') as file:
-        return json.load(file)
-
-
-def save_data_csv(title, data):
-    keys = data[0].keys()
-    with open(title, 'w', newline='') as file:
-        dict_writer = csv.DictWriter(file, keys)
-        dict_writer.writeheader()
-        dict_writer.writerows(data)
-
-
-def minutes_to_integer(running_time):
-    if running_time == 'N/A':
-        return None
-    if isinstance(running_time, list):
-        return int(running_time[0].split(" ")[0])
-    else:
-        return int(running_time.split(" ")[0])
 
 
 if __name__ == "__main__":
