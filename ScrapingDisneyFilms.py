@@ -1,5 +1,7 @@
 import re
 import requests
+import json
+import csv
 from bs4 import BeautifulSoup as bs
 
 
@@ -11,13 +13,19 @@ def main():
     # print(movies[0:10])
     # print(type(movies))
 
-    base_path = 'https://en.wikipedia.org/'
+    movie_info_list = scrap_wiki_disney(movies)
 
+    # print(movie_info_list)
+
+    save_data_csv('DisneyMovies.csv', movie_info_list)
+
+
+def scrap_wiki_disney(movies):
+
+    base_path = 'https://en.wikipedia.org/'
     movie_info_list = []
 
     for index, movie in enumerate(movies):
-        if index == 10:
-            break
         try:
             relative_path = movie['href']
             full_path = base_path + relative_path
@@ -29,7 +37,7 @@ def main():
             print(movie.get_text())
             print(e)
 
-    print(movie_info_list)
+    return movie_info_list
 
 
 def get_info_box(url):
@@ -64,6 +72,19 @@ def get_content_value(row_data):
         return [i.get_text(" ", strip=True).replace('\xa0', ' ') for i in row_data.find_all('li')]
     else:
         return row_data.get_text(" ", strip=True).replace('\xa0', ' ')
+
+
+def save_data_json(title, data):
+    with open(title, 'w', encoding='utf-8') as file:
+        json.dump(data, file, ensure_ascii=False, indent=2)
+
+
+def save_data_csv(title, data):
+    keys = data[0].keys()
+    with open(title, 'w', newline='') as file:
+        dict_writer = csv.DictWriter(file, keys)
+        dict_writer.writeheader()
+        dict_writer.writerows(data)
 
 
 if __name__ == "__main__":
