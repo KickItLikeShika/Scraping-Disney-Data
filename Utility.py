@@ -1,6 +1,8 @@
 import re
 import csv
 import json
+from datetime import datetime
+import pandas as pd
 
 
 class Minutes():
@@ -69,8 +71,27 @@ class Files():
             return json.load(file)
 
     def save_data_csv(self, title, data):
-        keys = data[0].keys()
-        with open(title, 'w', newline='') as file:
-            dict_writer = csv.DictWriter(file, keys)
-            dict_writer.writeheader()
-            dict_writer.writerows(data)
+        df = pd.DataFrame(data)
+        df.to_csv(title)
+
+
+class Date():
+
+    def clean_date(self, date):
+        return date.split("(")[0].strip()
+
+    def date_conversion(self, date):
+        if isinstance(date, list):
+            date = date[0]
+
+        if date == "N/A":
+            return None
+
+        date_str = self.clean_date(date)
+        fmts = ["%B %d, %Y", "%d %B %Y"]
+        for fmt in fmts:
+            try:
+                return datetime.strptime(date_str, fmt)
+            except:
+                pass
+        return None

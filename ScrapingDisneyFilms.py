@@ -1,23 +1,28 @@
 import requests
 from bs4 import BeautifulSoup as bs
 
-from Utility import Minutes, Money, Files
+from Utility import Minutes, Money, Files, Date
 
 
 def main():
+    # Making a GET request to wikipedia disney films movies
     r = requests.get(
         'https://en.wikipedia.org/wiki/List_of_Walt_Disney_Pictures_films')
     soup = bs(r.content)
     movies = soup.select('.wikitable.sortable i a')
 
+    print("Scraping is Done.")
+
     mins = Minutes()
     money = Money()
     files = Files()
+    d = Date()
 
-    # movie_info_list = scrap_wiki_disney(movies)
+    movie_info_list = scrap_wiki_disney(movies)
 
-    # save_data_csv('DisneyMovies.csv', movie_info_list)
-    # save_data_json('DisneyMovies.json', movie_info_list)
+    files.save_data_json('DisneyMovies.json', movie_info_list)
+
+    print("Cleaning Data....")
 
     movie_info = files.load_data_json('DisneyMovies.json')
 
@@ -30,7 +35,14 @@ def main():
         movie['Box office'] = money.money_conversion(
             movie.get('Box office', 'N/A'))
 
-    files.save_data_json('DisneyMovies_cleaned_runtime_money.json', movie_info)
+    for movie in movie_info:
+        movie['Release date'] = d.date_conversion(
+            movie.get('Release date', 'N/A'))
+
+    files.save_data_csv('DisneyMovies_cleaned_data.csv', movie_info)
+
+    print("Cleaning Data is Done.")
+    print("The data has been convertd to CSV file.")
 
 
 def scrap_wiki_disney(movies):
