@@ -7,7 +7,7 @@ The data is totally clean, But there is some missing values you have to handle t
 The data is available in CSV format. I thought it wasn't necessary to provide the data in a JSON format.
 
 Wikipedia disney movies link:
-`https://en.wikipedia.org/wiki/List_of_Walt_Disney_Pictures_films`
+https://en.wikipedia.org/wiki/List_of_Walt_Disney_Pictures_films
 
 # Startegy
 
