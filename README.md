@@ -11,7 +11,7 @@ https://en.wikipedia.org/wiki/List_of_Walt_Disney_Pictures_films
 
 # Startegy
 
-- Making a GET request to `https://en.wikipedia.org/wiki/List_of_Walt_Disney_Pictures_films`
+- Making a GET request to: https://en.wikipedia.org/wiki/List_of_Walt_Disney_Pictures_films
 
 - Get the content of the page by BeautifulSoup and go through all the film list by taking `https://en.wikipedia.org/` as a base path,
   get the realtive path for each film, combine them to create the full path, and make a GET request for each path.
