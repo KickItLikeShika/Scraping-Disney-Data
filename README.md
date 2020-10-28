@@ -1,6 +1,6 @@
 # Scraping Disney Data
 
-Scraping Wikipedia pages with some Data Science techniques, BeautifulSoup, requests, JSON, and CSV to gather  data about Disney movies and create a dataset for it.
+Scraping Wikipedia pages with some Data Science techniques, BeautifulSoup, requests, JSON, and CSV to gather data about Disney movies and create a dataset for it.
 
 The data is totally clean, But there is some missing values you have to handle them before analyze the data.
 
