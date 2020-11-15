@@ -4,7 +4,7 @@ Scraping Wikipedia pages with some Data Science techniques, BeautifulSoup, reque
 
 The data is totally clean, But there is some missing values you have to handle them before analyze the data.
 
-The data is available in CSV format. I thought it wasn't necessary to provide the data in a JSON format.
+The data is available in CSV format. I thought it wasn't necessary to provide the data in a JSON format.  
 
 Wikipedia disney movies link:
 https://en.wikipedia.org/wiki/List_of_Walt_Disney_Pictures_films
