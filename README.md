@@ -2,7 +2,7 @@
 
 Scraping Wikipedia pages with some Data Science techniques, BeautifulSoup, requests, JSON, and CSV to gather data about Disney movies and create a dataset for it.
 
-The data is totally clean, But there is some missing values you have to handle them before analyze the data.  
+The data is totally clean, But there is some missing values you have to handle them before analyze the data. 
 
 The data is available in CSV format. I thought it wasn't necessary to provide the data in a JSON format.
 
