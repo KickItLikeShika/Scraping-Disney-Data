@@ -23,4 +23,3 @@ https://en.wikipedia.org/wiki/List_of_Walt_Disney_Pictures_films
 - Go through the data and clean it.
 
 - Convert the data to a CSV file and save it.
- 
